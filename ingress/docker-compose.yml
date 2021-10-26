@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  web:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: nginx
+    volumes:
+      - ./templates:/etc/nginx/templates
+      - ./ssl:/etc/nginx/ssl
+    ports:
+      - "80:80"
+      - "443:443"

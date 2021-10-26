@@ -16,3 +16,4 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=YOUR_PASSWORD
     volumes:
       - vol-mongodb:/data/db
+      - ./dump:/home/dump
