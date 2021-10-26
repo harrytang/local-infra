@@ -1,10 +1,12 @@
 server {
   listen       80;
   listen  [::]:80;
-  listen  443 ssl;
+
+  listen       443 ssl;
   listen  [::]:443 ssl;
 
   server_name  learning-strapi.local.harrytang.com;
+  
   ssl_certificate     /etc/nginx/ssl/cert.pem;
   ssl_certificate_key /etc/nginx/ssl/key.pem;
 
