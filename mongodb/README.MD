@@ -14,7 +14,7 @@ docker exec -it mongodb-mongodb-1 /bin/sh
 use admin
 db.createUser(
   {
-    user: "strapi_user",
+    user: "some_user",
     pwd: "YOUR_LONG_PASSWORD",
     roles:
     [
