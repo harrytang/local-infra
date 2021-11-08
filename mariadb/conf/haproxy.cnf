@@ -1,0 +1,12 @@
+listen galera 
+bind 0.0.0.0:3306
+balance roundrobin
+mode tcp
+option tcpka
+timeout connect 30s
+timeout client 30s
+timeout server 30s
+option mysql-check user haproxy
+server mariadb1 mariadb1:3306 check weight 1
+server mariadb2 mariadb2:3306 check weight 1
+server mariadb3 mariadb3:3306 check weight 1

@@ -1,0 +1,66 @@
+version: "3.9"
+
+volumes:
+  data1:
+    driver: local
+  data2:
+    driver: local
+  data3:
+    driver: local
+
+services:
+  mariadb1:
+    image: mariadb:10.5
+    container_name: mariadb1
+    environment:
+      MYSQL_ROOT_PASSWORD: YOUR_PASSWORD
+    volumes:
+      - ./conf/galera.cnf:/etc/mysql/conf.d/galera.cnf
+      - ./conf/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./conf/start-mariadb-instance.sh:/mnt/scripts/start-mariadb-instance.sh
+      - ./instances:/mnt/instances
+      - data1:/var/lib/mysql
+    command:
+      - bash
+      - /mnt/scripts/start-mariadb-instance.sh
+  mariadb2:
+    image: mariadb:10.5
+    container_name: mariadb2
+    depends_on:
+      - mariadb1
+    environment:
+      MYSQL_ROOT_PASSWORD: YOUR_PASSWORD
+    volumes:
+      - ./conf/galera.cnf:/etc/mysql/conf.d/galera.cnf
+      - ./conf/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./conf/start-mariadb-instance.sh:/mnt/scripts/start-mariadb-instance.sh
+      - ./instances:/mnt/instances
+      - data2:/var/lib/mysql
+    command:
+      - bash
+      - /mnt/scripts/start-mariadb-instance.sh
+  mariadb3:
+    image: mariadb:10.5
+    container_name: mariadb3
+    depends_on:
+      - mariadb1
+    environment:
+      MYSQL_ROOT_PASSWORD: YOUR_PASSWORD
+    volumes:
+      - ./conf/galera.cnf:/etc/mysql/conf.d/galera.cnf
+      - ./conf/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./conf/start-mariadb-instance.sh:/mnt/scripts/start-mariadb-instance.sh
+      - ./instances:/mnt/instances
+      - data3:/var/lib/mysql
+    command:
+      - bash
+      - /mnt/scripts/start-mariadb-instance.sh
+  proxy:
+    image: haproxy:2.4
+    container_name: mysql
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp
+    volumes:
+      - ./conf/haproxy.cnf:/usr/local/etc/haproxy/haproxy.cfg
