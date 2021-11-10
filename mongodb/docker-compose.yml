@@ -1,12 +1,13 @@
 version: "3.9"
 
 volumes:
-  vol-mongodb:
+  data:
     driver: local
 
 services:
   mongodb:
     image: "mongo:latest"
+    container_name: mongodb
     ports:
       - target: 27017
         published: 27017
@@ -15,5 +16,5 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=YOUR_PASSWORD
     volumes:
-      - vol-mongodb:/data/db
+      - data:/data/db
       - ./dump:/home/dump
