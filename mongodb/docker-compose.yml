@@ -1,20 +1,56 @@
 version: "3.9"
 
 volumes:
-  data:
+  data1:
+    driver: local
+  data2:
+    driver: local
+  data3:
     driver: local
 
 services:
-  mongodb:
+  mongodb1:
     image: "mongo:latest"
-    container_name: mongodb
+    container_name: mongodb1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - target: 27017
         published: 27017
         protocol: tcp
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=YOUR_PASSWORD
+    command: ["/usr/bin/mongod", "--config", "/etc/mongod.conf"]
     volumes:
-      - data:/data/db
+      - data1:/data/db
+      - ./mongod.cnf:/etc/mongod.conf
+      - ./mongo.key:/etc/mongo.key
+      - ./dump:/home/dump
+  mongodb2:
+    image: "mongo:latest"
+    container_name: mongodb2
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - target: 27017
+        published: 27018
+        protocol: tcp
+    command: ["/usr/bin/mongod", "--config", "/etc/mongod.conf"]
+    volumes:
+      - data2:/data/db
+      - ./mongod.cnf:/etc/mongod.conf
+      - ./mongo.key:/etc/mongo.key
+      - ./dump:/home/dump
+  mongodb3:
+    image: "mongo:latest"
+    container_name: mongodb3
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - target: 27017
+        published: 27019
+        protocol: tcp
+    command: ["/usr/bin/mongod", "--config", "/etc/mongod.conf"]
+    volumes:
+      - data3:/data/db
+      - ./mongod.cnf:/etc/mongod.conf
+      - ./mongo.key:/etc/mongo.key
       - ./dump:/home/dump

@@ -62,5 +62,9 @@ services:
       - target: 3306
         published: 3306
         protocol: tcp
+    depends_on:
+      - mariadb1
+      - mariadb2
+      - mariadb3
     volumes:
       - ./conf/haproxy.cnf:/usr/local/etc/haproxy/haproxy.cfg

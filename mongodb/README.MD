@@ -1,5 +1,13 @@
 # MongoDB
 
+## Generate key
+
+```bash
+openssl rand -base64 756 > mongo.key
+sudo chmod 400 mongo.key
+sudo chown 999 mongo.key
+```
+
 ## Start MongoDB
 
 `docker compose up -d`
@@ -18,7 +26,7 @@ db.createUser(
     pwd: "YOUR_LONG_PASSWORD",
     roles:
     [
-      { role: "readWrite", db: "strapi_db" }
+      { role: "readWrite", db: "some_db" }
     ],
   }
 )

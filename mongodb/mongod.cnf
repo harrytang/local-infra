@@ -1,0 +1,6 @@
+net:
+  bindIpAll: true
+security:
+  keyFile: /etc/mongo.key
+replication:
+    replSetName: power-rs
