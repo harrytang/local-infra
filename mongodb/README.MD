@@ -12,13 +12,51 @@ sudo chown 999 mongo.key
 
 `docker compose up -d`
 
-## Add users
+## Init replica set
 
 ```bash
-docker exec -it mongodb-mongodb-1 /bin/sh
+docker exec -it mongodb1 /bin/sh
 ```
 
-```sql
+```mongosh
+rs.initiate( {
+   _id : "power-rs",
+   members: [
+      { _id: 0, host: "host.docker.internal:27017" },
+      { _id: 1, host: "host.docker.internal:27018" },
+      { _id: 2, host: "host.docker.internal:27019" }
+   ]
+})
+```
+
+## add root user
+
+```mongosh
+admin = db.getSiblingDB("admin")
+admin.createUser(
+  {
+    user: "root",
+    pwd: passwordPrompt(),
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+```
+
+## add cluster admin
+
+```mongosh
+db.getSiblingDB("admin").createUser(
+  {
+    "user" : "admin",
+    "pwd" : passwordPrompt(),
+    roles: [ { "role" : "clusterAdmin", "db" : "admin" } ]
+  }
+)
+```
+
+## add normal user
+
+```mongosh
 use admin
 db.createUser(
   {
