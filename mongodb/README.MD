@@ -69,3 +69,11 @@ db.createUser(
   }
 )
 ```
+
+## connecting
+
+add `127.0.0.1 host.docker.internal` to your `hosts` file, then use the connection string below
+
+```text
+mongodb://root:YOUR_PASSWORD@localhost:27017,localhost:27018,localhost:27019/admin?ssl=false&replicaSet=power-rs&authSource=admin&retryWrites=true&w=majority
+```
